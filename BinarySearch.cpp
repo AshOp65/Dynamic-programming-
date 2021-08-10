@@ -1,40 +1,28 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-
-int binary(int a[],int n, int x,int search){
-    int low=0,high=n-1,mid;
-    int res=-1;
-    while(low<=high){
-        mid = (high+low)/2;
-        if (x==a[mid]){
-        res= mid;
-        if(search){
-            high=mid -1;
-        }
-        else{
-            low = mid+1;
-        }
-        }
-        else if(x<a[mid]){
-            high=mid-1;
-        }
-        
-        else{
-            low=mid+1;
-        }
-        
-    }
-    return res;
+int arr[100009];
+int t[100009];
+int n;
+int frog(int i)
+{
+    if (i == n - 1)
+        return 0;
+    if (t[i] != -1)
+        return t[i];
+    int ans = frog(i + 1) + abs(arr[i + 1] - arr[i]);
+    if (i + 2 < n)
+        ans = min(ans, frog(i + 2) + abs(arr[i + 2] - arr[i]));
+    return t[i] = ans;
 }
-
-int main() {
-   int a[]= {2, 5, 5, 5, 6, 6, 8, 9, 9, 9};
-   int n= sizeof(a)/sizeof a[0];
-   int x=6;
-   int first = binary(a,n,x,1);
-   int second= binary(a,n,x,0);
-   int count = second - first +1;
-   cout<<count<<" ";
-
+int main()
+{
+    memset(t, -1, sizeof(t));
+    //int n;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << frog(0) << endl;
     return 0;
 }
